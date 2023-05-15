@@ -8,8 +8,6 @@ local cursor = msg.url("main", "/cursor", "cursor")
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	rendercam.follow(go.get_id("cursor"), true, go.get_id("camera"))
-
 	self.mouse_spos = vmath.vector3()
 end
 
