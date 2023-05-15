@@ -1,0 +1,16 @@
+mouse_trigger {
+  input: MOUSE_BUTTON_1
+  action: "touch"
+}
+mouse_trigger {
+  input: MOUSE_WHEEL_UP
+  action: "wup"
+}
+mouse_trigger {
+  input: MOUSE_WHEEL_DOWN
+  action: "wdown"
+}
+mouse_trigger {
+  input: MOUSE_BUTTON_MIDDLE
+  action: "mc"
+}

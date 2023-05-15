@@ -1,0 +1,31 @@
+local function round(x)
+	local a = x % 1
+	x = x - a
+	if a < 0.5 then a = 0
+	else a = 1 end
+	return x + a
+end
+
+
+function init(self)
+	self.pos = vmath.vector3(0)
+	self.node = gui.get_node("parent")
+	self.pie_node = gui.get_node("pie")
+	self.text_node = gui.get_node("text")
+	gui.set_enabled(self.node, false)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("update pos") then
+		self.pos.x =  round(message.pos.x)
+		self.pos.y =  round(message.pos.y)
+
+		gui.set_position(self.node, self.pos)
+		gui.set_enabled(self.node, true)
+		local text = "(x:"..self.pos.x..",y:"..self.pos.y..")"
+		gui.set_text(self.text_node, text)
+		gui.cancel_animation(self.pie_node, "position.y")
+		gui.set_position(self.pie_node,vmath.vector3(0))
+		gui.animate(self.pie_node, "position.y", 5, gui.EASING_INOUTCUBIC, 1, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+	end
+end

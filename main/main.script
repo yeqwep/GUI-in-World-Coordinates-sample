@@ -1,0 +1,49 @@
+
+local rendercam = require "rendercam.rendercam"
+
+local zstep = 2
+local panning = false
+
+local cursor = msg.url("main", "/cursor", "cursor")
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	rendercam.follow(go.get_id("cursor"), true, go.get_id("camera"))
+
+	self.mouse_spos = vmath.vector3()
+end
+
+function update(self, dt)
+	self.mouse_wpos = rendercam.screen_to_world_2d(self.mouse_spos.x, self.mouse_spos.y)
+	msg.post(cursor, "update pos", {pos = self.mouse_wpos})
+end
+
+function on_input(self, action_id, action)
+	if action_id == nil then
+		self.mouse_spos.x = action.screen_x;  self.mouse_spos.y = action.screen_y
+
+		if panning then
+			local dv = rendercam.screen_to_world_2d(action.screen_dx, action.screen_dy, true)
+			rendercam.pan(-dv.x, -dv.y)
+		end
+
+	elseif action_id == hash("wup") then
+		rendercam.zoom(-zstep)
+
+	elseif action_id == hash("wdown") then
+		rendercam.zoom(zstep)
+
+	elseif action_id == hash("mc") then
+		if action.pressed then
+			panning = true
+		elseif action.released then
+			panning = false
+		end
+	elseif action_id == hash("touch") then
+		msg.post("/go#would_icon","update pos",{pos = self.mouse_wpos})
+	end
+end
+
+function final(self)
+	msg.post(".", "release_input_focus")
+end
