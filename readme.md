@@ -6,6 +6,5 @@ https://forum.defold.com/t/how-to-gui-in-defold/73256
 tilemap:KENNEY  
 https://www.kenney.nl/
 
-rendercam  
 rendercam:rgrams  
 https://github.com/rgrams/rendercam  
